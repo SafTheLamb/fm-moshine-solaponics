@@ -1,0 +1,17 @@
+{
+  "name": "moshine-solaponics",
+  "title": "Wooden Moshine: Solaponics",
+  "description": "Grow wood on Moshine in the shade!",
+  "author": "SafTheLamb",
+  "version": "0.1.0",
+  "factorio_version": "2.0",
+  "homepage": "https://codeberg.org/SafTheLamb/fm-moshine-solaponics",
+  "package": {
+    "ignore": ["thumbnail.afphoto", "**/*.afphoto", "**/*.ase", "**/*.afphoto~lock~", "**/*.pdn", "renders/*"]
+  },
+  "dependencies": [
+    "astroponics >= 1.7.0",
+    "Moshine"
+  ],
+  "expansion_shaders_required": true
+}

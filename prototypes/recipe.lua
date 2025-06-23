@@ -24,7 +24,7 @@ data:extend({
 		ingredients = {
 			{type="item", name="space-garden", amount=1},
 			{type="item", name="shielded-glass", amount=80},
-			{type="item", name="energy-shield-equipment", amount=10}
+			{type="item", name="heat-pipe", amount=10}
 		},
 		weight = 2000*kg,
 		results = {{type="item", name="thermal-garden", amount=1}}
@@ -42,7 +42,7 @@ data:extend({
 		ingredients = {
 			{type="fluid", name="petroleum-gas", amount=50},
 			{type="fluid", name="water", amount=50},
-			{type="item", name="carbon", amount=1}
+			{type="item", name="silicon", amount=1}
 		},
 		results = {{type="fluid", name="petroketone-hot", amount=50, temperature=150}}
 	},
@@ -94,7 +94,7 @@ data:extend({
 		results = {
 			{type="item", name="wood", amount=wood_amount},
 			{type="fluid", name="bioslurry", amount=25},
-			{type="fluid", name="petroketone-hot", amount=100, ignored_by_stats=100, ignored_by_productivity=100}
+			{type="fluid", name="petroketone-hot", amount=100, temperature=150, ignored_by_stats=100, ignored_by_productivity=100}
 		},
 		main_product = "wood"
 	}

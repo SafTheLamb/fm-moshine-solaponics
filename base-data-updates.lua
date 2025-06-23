@@ -2,34 +2,64 @@ local frep = require("__fdsl__.lib.recipe")
 
 -------------------------------------------------------------------------- Data processor
 
-frep.add_ingredient("model-stable", {type="fluid", name="petroketone-cold", amount=1000, ignored_by_stats=1000})
-frep.add_result("model-stable", {type="fluid", name="petroketone-hot", amount=500, temperature=150, ignored_by_stats=500, ignored_by_productivity=500})
-data.raw.recipe["model-stable"].main_product = "model-stable"
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
 
-local data_processor = data.raw["assembling-machine"]["data-processor"]
-for _,fluid_box in pairs(data_processor.fluid_boxes) do
-	local is_data_connection = true
-	for _,connection in pairs(fluid_box.pipe_connections) do
-		if connection.flow_direction == "input" then
-			if connection.direction == defines.direction.east then
-				fluid_box.production_type = "output"
-				connection.flow_direction = "output"
-				is_data_connection = false
-				break
-			elseif connection.direction == defines.direction.west then
-				is_data_connection = false
+	local data_processor = data.raw["assembling-machine"]["data-processor"]
+	for _,fluid_box in pairs(data_processor.fluid_boxes) do
+		if fluid_box.production_type == "input" then
+			log("MOSHINE_DATA_PROCESSOR_CHANGES")
+			for i=#fluid_box.pipe_connections,1,-1 do
+				local connection = fluid_box.pipe_connections[i]
+				if connection.direction == defines.direction.east or connection.direction == defines.direction.west then
+					log(serpent.block(connection))
+					table.remove(fluid_box.pipe_connections, i)
+				end
 			end
+			log(serpent.block(fluid_box))
 		end
 	end
-	if is_data_connection then
-		fluid_box.filter = "raw-data"
-	else
-		fluid_box.pipe_picture = assembler3pipepictures()
-		fluid_box.pipe_covers = pipecoverspictures()
-	end
+	table.insert(data_processor.fluid_boxes, {
+		production_type = "input",
+		pipe_picture = assembler3pipepictures(),
+		pipe_covers = pipecoverspictures(),
+		volume = 1000,
+		pipe_connections = {{flow_direction="input", direction=defines.direction.west, position={-1, 0}}},
+		secondary_draw_orders = {north=-1},
+	})
+	table.insert(data_processor.fluid_boxes, {
+		production_type = "output",
+		pipe_picture = assembler3pipepictures(),
+		pipe_covers = pipecoverspictures(),
+		volume = 1000,
+		pipe_connections = {{flow_direction="output", direction=defines.direction.east, position={1, 0}}},
+		secondary_draw_orders = {north=-1},
+	})
 end
 
-frep.add_ingredient("datacell-add-equation", {type="fluid", name="chloroplast-extract", amount=1960})
+-------------------------------------------------------------------------- Datacells
+
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
+	local _,data_ingredient = frep.get_ingredient("datacell-add-raw-data", "raw-data")
+	local _,data_result = frep.get_result("datacell-remove-raw-data", "raw-data")
+	data_ingredient.fluidbox_index = 1
+	data_result.fluidbox_index = 1
+
+	frep.add_ingredient("datacell-add-equation", {type="fluid", name="raw-data", amount=100, fluidbox_index=1})
+	frep.add_ingredient("datacell-add-equation", {type="fluid", name="chloroplast-extract", amount=400, fluidbox_index=2})
+	frep.add_result("datacell-add-equation", {type="fluid", name="bioslurry", amount=100, fluidbox_index=2})
+end
+
+-------------------------------------------------------------------------- Model creation
+
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
+	frep.add_ingredient("model-unstable", {type="fluid", name="petroketone-hot", amount=500, ignored_by_stats=250})
+	frep.add_result("model-unstable", {type="fluid", name="petroketone-cold", temperature=-15, amount=250, ignored_by_stats=250, fluidbox_index=2})
+	data.raw.recipe["model-unstable"].main_product = "model-unstable"
+
+	frep.add_ingredient("model-stable", {type="fluid", name="petroketone-cold", amount=1000, ignored_by_stats=500})
+	frep.add_result("model-stable", {type="fluid", name="petroketone-hot", amount=500, temperature=150, ignored_by_stats=500, ignored_by_productivity=500, fluidbox_index=2})
+	data.raw.recipe["model-stable"].main_product = "model-stable"
+end
 
 -------------------------------------------------------------------------- Model training
 

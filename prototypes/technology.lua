@@ -7,20 +7,13 @@ data:extend({
 		effects = {
 			{type="unlock-recipe", recipe="shielded-glass"},
 			{type="unlock-recipe", recipe="thermal-garden"},
-			{type="unlock-recipe", recipe="tree-solaponics"},
-			{type="unlock-recipe", recipe="petroketone"},
-			{type="unlock-recipe", recipe="petroketone-cooling"}
+			{type="unlock-recipe", recipe="tree-solaponics"}
 		},
-		prerequisites = {"moshine-tech-silicon-carbide", "moshine-tech-glass", "energy-shield-equipment"},
-		unit = {
-			count = 500,
-			ingredients = {
-				{"automation-science-pack", 1},
-				{"logistic-science-pack", 1},
-				{"chemical-science-pack", 1},
-				{"space-science-pack", 1}
-			},
-			time = 60
+		prerequisites = {"moshine-tech-silicon-carbide", "moshine-tech-glass"},
+		research_trigger = {
+			type = "craft-item",
+			item = "silicon-carbide",
+			count = 1
 		}
 	}
 })

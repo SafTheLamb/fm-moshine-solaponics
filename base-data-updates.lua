@@ -1,5 +1,12 @@
 local frep = require("__fdsl__.lib.recipe")
 
+-------------------------------------------------------------------------- Shielded glass
+
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
+	frep.replace_ingredient("ai-trainer", "glass", "shielded-glass")
+	frep.replace_ingredient("3d-data-storage", "glass", "shielded-glass")
+end
+
 -------------------------------------------------------------------------- Data processor
 
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
@@ -45,15 +52,18 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 	data_result.fluidbox_index = 1
 
 	frep.add_ingredient("datacell-add-equation", {type="fluid", name="raw-data", amount=100, fluidbox_index=1})
-	frep.add_ingredient("datacell-add-equation", {type="fluid", name="chloroplast-extract", amount=400, fluidbox_index=2})
-	frep.add_result("datacell-add-equation", {type="fluid", name="bioslurry", amount=100, fluidbox_index=2})
+	frep.add_ingredient("datacell-add-equation", {type="fluid", name="chloroplast-extract", amount=400, fluidbox_index=2, ignored_by_stats=40})
+	frep.add_result("datacell-add-equation", {type="fluid", name="bioslurry", amount=40, fluidbox_index=2})
 end
 
 -------------------------------------------------------------------------- Model creation
 
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
-	frep.add_ingredient("model-unstable", {type="fluid", name="petroketone-hot", amount=500, ignored_by_stats=250})
-	frep.add_result("model-unstable", {type="fluid", name="petroketone-cold", temperature=-15, amount=250, ignored_by_stats=250, fluidbox_index=2})
+	local _,model_ingredient = frep.get_ingredient("model-unstable", "raw-data")
+	model_ingredient.fluidbox_index = 1
+
+	frep.add_ingredient("model-unstable", {type="fluid", name="chloroplast-extract", amount=100, ignored_by_stats=10, fluidbox_index=2})
+	frep.add_result("model-unstable", {type="fluid", name="bioslurry", amount=10, fluidbox_index=2})
 	data.raw.recipe["model-unstable"].main_product = "model-unstable"
 
 	frep.add_ingredient("model-stable", {type="fluid", name="petroketone-cold", amount=1000, ignored_by_stats=500})

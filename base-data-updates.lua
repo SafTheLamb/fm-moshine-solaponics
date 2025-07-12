@@ -12,6 +12,38 @@ end
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
 
 	local data_processor = data.raw["assembling-machine"]["data-processor"]
+	if helpers.compare_versions(mods["Moshine"], "1.0.23") <= 0 then
+		data_processor.fluid_boxes = {
+			{
+				production_type = "input",
+				volume = 1000,
+				pipe_connections = {
+				{flow_direction = "input", direction = defines.direction.north, position = {0, -1}, connection_category = "data"},
+				{flow_direction = "input", direction = defines.direction.east, position = {1, 0}, connection_category = "data"},
+				{flow_direction = "input", direction = defines.direction.south, position = {0, 1}, connection_category = "data"},
+				{flow_direction = "input", direction = defines.direction.west, position = {-1, 0}, connection_category = "data"}
+				},
+				secondary_draw_orders = { north = -1 },
+				max_pipeline_extent = 1000000,
+			},
+			{
+				production_type = "output",
+				volume = 1000,
+				pipe_connections = {
+				{flow_direction = "output", direction = defines.direction.north, position = {-1, -1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.north, position = {1, -1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.east, position = {1, -1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.east, position = {1, 1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.south, position = {1, 1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.south, position = {-1, 1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.west, position = {-1, 1}, connection_category = "data"},
+				{flow_direction = "output", direction = defines.direction.west, position = {-1, -1}, connection_category = "data"},
+				},
+				secondary_draw_orders = { north = -1 },
+				max_pipeline_extent = 1000000,
+			},
+		}
+	end
 	for _,fluid_box in pairs(data_processor.fluid_boxes) do
 		if fluid_box.production_type == "input" then
 			log("MOSHINE_DATA_PROCESSOR_CHANGES")

@@ -1,7 +1,12 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.1.2
+Version: 0.2.0
 Date: ????
   Changes:
+    - Massively reduced chloroplast extract needed for AI model training (max tier: 150 from 1000)
+    - Reduced chloroplast extract needed for equation seeding to 50 from 100
+    - Changed chloroplast extract needed for unstable models to match equation seeding (50 CE -> 20 bioslurry)
+  Compatibility:
+    - Add compatibility for Krastorio 2 Spaced Out (load error + kr-glass)
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 2025-07-12

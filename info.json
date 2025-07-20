@@ -11,7 +11,8 @@
   },
   "dependencies": [
     "astroponics >= 1.7.0",
-    "Moshine >= 1.0.22"
+    "Moshine >= 1.0.22",
+    "(?) Krastorio2-spaced-out"
   ],
   "expansion_shaders_required": true
 }

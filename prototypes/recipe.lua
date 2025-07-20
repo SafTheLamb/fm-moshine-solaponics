@@ -1,4 +1,5 @@
 local wood_amount = mods["early-agriculture"] and settings.startup["early-agriculture-buff-tree-plant"].value and 20 or 8
+local glass_item = mods["Krastorio2-spaced-out"] and "kr-glass" or "glass"
 
 data:extend({
 	{
@@ -10,7 +11,7 @@ data:extend({
 		auto_recycle = false,
 		energy_required = mods["alloy-smelting"] and 6.4 or 4,
 		ingredients = {
-			{type="item", name="glass", amount=2},
+			{type="item", name=glass_item, amount=2},
 			{type="item", name="plastic-bar", amount=1},
 			{type="item", name="silicon-carbide", amount=1}
 		},

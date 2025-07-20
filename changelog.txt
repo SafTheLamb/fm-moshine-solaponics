@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.0
-Date: ????
+Date: 2025-07-20
   Changes:
     - Massively reduced chloroplast extract needed for AI model training (max tier: 150 from 1000)
     - Reduced chloroplast extract needed for equation seeding to 50 from 100

@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.1
-Date: ????
+Date: 2025-10-12
   Changes:
     - Support Moshine versions 1.1.0+
     - Prevent chloroplast extraction from being used for quality cycling magnets

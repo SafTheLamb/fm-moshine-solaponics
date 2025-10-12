@@ -50,7 +50,7 @@ data:extend({
 		-- dying_explosion = "lab-explosion",
 		collision_box = {{-3.2, -3.2}, {3.2, 3.2}},
 		selection_box = {{-3.5, -3.5}, {3.5, 3.5}},
-		surface_conditions = {{property="pressure", min=700, max=700}},
+		surface_conditions = {{property="pressure", min=701, max=701}},
 		crafting_categories = {"solaponics"},
 		crafting_speed = 2,
 		energy_source = {

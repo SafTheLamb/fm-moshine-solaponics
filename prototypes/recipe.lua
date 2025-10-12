@@ -77,7 +77,7 @@ data:extend({
 		icons = {
 			{icon="__base__/graphics/icons/wood.png"},
 			{icon="__astroponics__/graphics/icons/fluid/liquid-fertilizer.png", shift={-10,-10}, scale=0.25},
-			{icon="__Moshine-assets__/graphics/icons/moshine.png", shift={8,8}, scale=0.3},
+			{icon="__Moshine__/graphics/icons/moshine.png", shift={8,8}, scale=0.3},
 		},
 		category = "solaponics",
 		subgroup = "astroponic-processes",
@@ -112,6 +112,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 			order = "m[moshine]-c[chloroplast-extraction]",
 			enabled = false,
 			allow_productivity = true,
+			allow_quality = false,
 			energy_required = 60,
 			ingredients = {
 				{type="fluid", name="bioslurry", amount=100},

@@ -10,8 +10,8 @@
     "ignore": ["thumbnail.afphoto", "**/*.afphoto", "**/*.ase", "**/*.afphoto~lock~", "**/*.pdn", "renders/*"]
   },
   "dependencies": [
-    "astroponics >= 1.7.0",
-    "Moshine >= 1.0.22",
+    "astroponics >= 1.7.2",
+    "Moshine >= 1.1.0",
     "(?) Krastorio2-spaced-out"
   ],
   "expansion_shaders_required": true

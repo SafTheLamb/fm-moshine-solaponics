@@ -79,7 +79,7 @@ end
 -------------------------------------------------------------------------- Datacells
 
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
-	local _,data_ingredient = frep.get_ingredient("datacell-add-raw-data", "raw-data")
+	local _,data_ingredient = frep.get_ingredient("datacell-raw-data", "raw-data")
 	local _,data_result = frep.get_result("datacell-remove-raw-data", "raw-data")
 	data_ingredient.fluidbox_index = 1
 	data_result.fluidbox_index = 1

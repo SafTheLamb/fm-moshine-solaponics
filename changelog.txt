@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.2
 Date: ????
-  Changes:
+  Compatibility:
+    - Wooden Industry: Add charcoal to Moshine rocks to remove need for wood/charcoal import
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.1
 Date: 2025-10-12

@@ -106,26 +106,28 @@ end
 
 -------------------------------------------------------------------------- Model training
 
-frep.add_ingredient("ai-tier-0", {type="fluid", name="chloroplast-extract", amount=10})
-frep.add_ingredient("ai-tier-1", {type="fluid", name="chloroplast-extract", amount=20})
-frep.add_ingredient("ai-tier-2", {type="fluid", name="chloroplast-extract", amount=30})
-frep.add_ingredient("ai-tier-3", {type="fluid", name="chloroplast-extract", amount=40})
-frep.add_ingredient("ai-tier-4", {type="fluid", name="chloroplast-extract", amount=50})
-frep.add_ingredient("ai-tier-5", {type="fluid", name="chloroplast-extract", amount=60})
-frep.add_ingredient("ai-tier-6", {type="fluid", name="chloroplast-extract", amount=80})
-frep.add_ingredient("ai-tier-7", {type="fluid", name="chloroplast-extract", amount=100})
-frep.add_ingredient("ai-tier-8", {type="fluid", name="chloroplast-extract", amount=120})
-frep.add_ingredient("ai-tier-9", {type="fluid", name="chloroplast-extract", amount=150})
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
+	frep.add_ingredient("ai-tier-0", {type="fluid", name="chloroplast-extract", amount=10})
+	frep.add_ingredient("ai-tier-1", {type="fluid", name="chloroplast-extract", amount=20})
+	frep.add_ingredient("ai-tier-2", {type="fluid", name="chloroplast-extract", amount=30})
+	frep.add_ingredient("ai-tier-3", {type="fluid", name="chloroplast-extract", amount=40})
+	frep.add_ingredient("ai-tier-4", {type="fluid", name="chloroplast-extract", amount=50})
+	frep.add_ingredient("ai-tier-5", {type="fluid", name="chloroplast-extract", amount=60})
+	frep.add_ingredient("ai-tier-6", {type="fluid", name="chloroplast-extract", amount=80})
+	frep.add_ingredient("ai-tier-7", {type="fluid", name="chloroplast-extract", amount=100})
+	frep.add_ingredient("ai-tier-8", {type="fluid", name="chloroplast-extract", amount=120})
+	frep.add_ingredient("ai-tier-9", {type="fluid", name="chloroplast-extract", amount=150})
 
-local ai_trainer = data.raw["furnace"]["ai-trainer"]
--- ai_trainer.source_inventory_size = ai_trainer.source_inventory_size + 1
-assert(ai_trainer.fluid_boxes == nil, "Wooden Moshine: Solaponics was about to override the AI Trainer's fluid boxes")
-ai_trainer.fluid_boxes = {
-	{
-		production_type = "input",
-		pipe_picture = assembler3pipepictures(),
-		pipe_covers = pipecoverspictures(),
-		volume = 1000,
-		pipe_connections = {{flow_direction="input", direction=defines.direction.north, position={0, -3}}}
+	local ai_trainer = data.raw["furnace"]["ai-trainer"]
+	-- ai_trainer.source_inventory_size = ai_trainer.source_inventory_size + 1
+	assert(ai_trainer.fluid_boxes == nil, "Wooden Moshine: Solaponics was about to override the AI Trainer's fluid boxes")
+	ai_trainer.fluid_boxes = {
+		{
+			production_type = "input",
+			pipe_picture = assembler3pipepictures(),
+			pipe_covers = pipecoverspictures(),
+			volume = 1000,
+			pipe_connections = {{flow_direction="input", direction=defines.direction.north, position={0, -3}}}
+		}
 	}
-}
+end

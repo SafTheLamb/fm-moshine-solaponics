@@ -9,3 +9,5 @@ require("prototypes.recipe")
 require("prototypes.technology")
 
 require("base-data-updates")
+
+require("prototypes.compat.wood-industry")

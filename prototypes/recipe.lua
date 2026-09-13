@@ -5,7 +5,7 @@ data:extend({
 	{
 		type = "recipe",
 		name = "shielded-glass",
-		category = mods["alloy-smelting"] and "kiln-smelting" or "crafting",
+		categories = {mods["alloy-smelting"] and "kiln-smelting" or "crafting"},
 		enabled = false,
 		allow_productivity = true,
 		auto_recycle = false,
@@ -33,7 +33,7 @@ data:extend({
 	{
 		type = "recipe",
 		name = "petroketone",
-		category = "chemistry-or-cryogenics",
+		categories = {"chemistry", "cryogenics"},
 		subgroup = "moshine-processes",
 		order = "fga",
 		enabled = false,
@@ -52,7 +52,7 @@ data:extend({
 		name = "petroketone-cooling",
 		localised_name = {"recipe-name.petroketone-cooling"},
 		icon = "__moshine-solaponics__/graphics/icons/fluid/petroketone-cooling.png",
-		category = "chemistry-or-cryogenics",
+		categories = {"chemistry", "cryogenics"},
 		subgroup = "moshine-processes",
 		order = "fgb",
 		enabled = false,
@@ -79,7 +79,7 @@ data:extend({
 			{icon="__astroponics__/graphics/icons/fluid/liquid-fertilizer.png", shift={-10,-10}, scale=0.25},
 			{icon="__Moshine__/graphics/icons/moshine.png", shift={8,8}, scale=0.3},
 		},
-		category = "solaponics",
+		categories = {"solaponics"},
 		subgroup = "astroponic-processes",
 		order = "m[moshine]-a[solaponics]",
 		enabled = false,
@@ -107,7 +107,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 			name = "chloroplast-extraction",
 			localised_name = {"recipe-name.chloroplast-extraction"},
 			icon = "__moshine-solaponics__/graphics/icons/fluid/chloroplast-extraction.png",
-			category = "electromagnetics",
+			categories = {"electromagnetics"},
 			subgroup = "astroponic-processes",
 			order = "m[moshine]-c[chloroplast-extraction]",
 			enabled = false,
@@ -121,7 +121,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 			},
 			results = {
 				{type="fluid", name="chloroplast-extract", amount=100},
-				{type="item", name="magnet", amount=1, probability=0.98, ignored_by_stats=1, ignored_by_productivity=1}
+				{type="item", name="magnet", amount=1, independent_probability=0.98, ignored_by_stats=1, ignored_by_productivity=1}
 			},
 			main_product = "chloroplast-extract"
 		},

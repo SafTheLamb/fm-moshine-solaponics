@@ -2,40 +2,24 @@ local hit_effects = require("__base__.prototypes.entity.hit-effects")
 local sounds = require("__base__.prototypes.entity.sounds")
 
 local function assemblerpipepicturesfrozen()
-	return {
-		north = {
-			filename = "__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-N-frozen.png",
-			priority = "extra-high",
-			width = 71,
-			height = 38,
-			shift = util.by_pixel(2.25, 13.5),
-			scale = 0.5
-		},
-		east = {
-			filename = "__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-E-frozen.png",
-			priority = "extra-high",
-			width = 42,
-			height = 76,
-			shift = util.by_pixel(-24.5, 1),
-			scale = 0.5
-		},
-		south = {
-			filename = "__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-S-frozen.png",
-			priority = "extra-high",
-			width = 88,
-			height = 61,
-			shift = util.by_pixel(0, -31.25),
-			scale = 0.5
-		},
-		west = {
-			filename = "__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-W-frozen.png",
-			priority = "extra-high",
-			width = 39,
-			height = 73,
-			shift = util.by_pixel(25.75, 1.25),
-			scale = 0.5
-		}
-	}
+  return mods["space-age"] and {
+    north = util.sprite_load("__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-N-frozen", {
+      priority = "extra-high",
+      scale = 0.5
+    }),
+    east = util.sprite_load("__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-E-frozen", {
+      priority = "extra-high",
+      scale = 0.5
+    }),
+    south = util.sprite_load("__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-S-frozen", {
+      priority = "extra-high",
+      scale = 0.5
+    }),
+    west = util.sprite_load("__space-age__/graphics/entity/frozen/assembling-machine/assembling-machine-pipe-W-frozen", {
+      priority = "extra-high",
+      scale = 0.5
+    }),
+  } or nil
 end
 
 data:extend({
@@ -63,7 +47,7 @@ data:extend({
 		fluid_boxes = {
 			{
 				production_type = "input",
-				pipe_picture = assembler3pipepictures(),
+				pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 				pipe_picture_frozen = assemblerpipepicturesfrozen(),
 				pipe_covers = pipecoverspictures(),
 				volume = 1000,
@@ -71,7 +55,7 @@ data:extend({
 			},
 			{
 				production_type = "input",
-				pipe_picture = assembler2pipepictures(),
+				pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 				pipe_picture_frozen = assemblerpipepicturesfrozen(),
 				pipe_covers = pipecoverspictures(),
 				volume = 1000,
@@ -79,7 +63,7 @@ data:extend({
 			},
 			{
 				production_type = "output",
-				pipe_picture = assembler3pipepictures(),
+				pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 				pipe_picture_frozen = assemblerpipepicturesfrozen(),
 				pipe_covers = pipecoverspictures(),
 				volume = 1000,
@@ -87,7 +71,7 @@ data:extend({
 			},
 			{
 				production_type = "output",
-				pipe_picture = assembler2pipepictures(),
+				pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 				pipe_picture_frozen = assemblerpipepicturesfrozen(),
 				pipe_covers = pipecoverspictures(),
 				volume = 1000,

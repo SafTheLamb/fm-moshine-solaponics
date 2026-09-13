@@ -60,7 +60,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 	end
 	table.insert(data_processor.fluid_boxes, {
 		production_type = "input",
-		pipe_picture = assembler3pipepictures(),
+		pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 		pipe_covers = pipecoverspictures(),
 		volume = 1000,
 		pipe_connections = {{flow_direction="input", direction=defines.direction.west, position={-1, 0}}},
@@ -68,7 +68,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 	})
 	table.insert(data_processor.fluid_boxes, {
 		production_type = "output",
-		pipe_picture = assembler3pipepictures(),
+		pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 		pipe_covers = pipecoverspictures(),
 		volume = 1000,
 		pipe_connections = {{flow_direction="output", direction=defines.direction.east, position={1, 0}}},
@@ -124,7 +124,7 @@ if settings.startup["moshine-solaponics-modify-vanilla"].value then
 	ai_trainer.fluid_boxes = {
 		{
 			production_type = "input",
-			pipe_picture = assembler3pipepictures(),
+			pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
 			pipe_covers = pipecoverspictures(),
 			volume = 1000,
 			pipe_connections = {{flow_direction="input", direction=defines.direction.north, position={0, -3}}}

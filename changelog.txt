@@ -2,6 +2,7 @@
 Version: 0.3.1
 Date: ????
   Changes:
+    - Fix fluids showing up in the wrong fluidboxes, due to the data processor prototoype changing to support multi-data inputs
 ---------------------------------------------------------------------------------------------------
 Version: 0.3.0
 Date: 2026-09-12

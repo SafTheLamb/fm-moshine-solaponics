@@ -9,97 +9,100 @@ end
 
 -------------------------------------------------------------------------- Data processor
 
+local new_input_fluidbox_index = 0
+local new_output_fluidbox_index = 0
+
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
 	local data_processor = data.raw["assembling-machine"]["data-processor"]
 
-	if helpers.compare_versions(mods["Moshine"], "1.0.23") <= 0 then
-		data_processor.fluid_boxes = {
-			{
-				production_type = "input",
-				volume = 1000,
-				pipe_connections = {
-				{flow_direction = "input", direction = defines.direction.north, position = {0, -1}, connection_category = "data"},
-				{flow_direction = "input", direction = defines.direction.east, position = {1, 0}, connection_category = "data"},
-				{flow_direction = "input", direction = defines.direction.south, position = {0, 1}, connection_category = "data"},
-				{flow_direction = "input", direction = defines.direction.west, position = {-1, 0}, connection_category = "data"}
-				},
-				secondary_draw_orders = { north = -1 },
-				max_pipeline_extent = 1000000,
-			},
-			{
-				production_type = "output",
-				volume = 1000,
-				pipe_connections = {
-				{flow_direction = "output", direction = defines.direction.north, position = {-1, -1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.north, position = {1, -1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.east, position = {1, -1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.east, position = {1, 1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.south, position = {1, 1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.south, position = {-1, 1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.west, position = {-1, 1}, connection_category = "data"},
-				{flow_direction = "output", direction = defines.direction.west, position = {-1, -1}, connection_category = "data"},
-				},
-				secondary_draw_orders = { north = -1 },
-				max_pipeline_extent = 1000000,
-			},
-		}
-	end
-
-	for _,fluid_box in pairs(data_processor.fluid_boxes) do
-		if fluid_box.production_type == "input" then
-			log("MOSHINE_DATA_PROCESSOR_CHANGES")
-			for i=#fluid_box.pipe_connections,1,-1 do
-				local connection = fluid_box.pipe_connections[i]
-				if connection.direction == defines.direction.east or connection.direction == defines.direction.west then
-					log(serpent.block(connection))
-					table.remove(fluid_box.pipe_connections, i)
+	if data_processor.fluid_boxes then
+		for i=#data_processor.fluid_boxes,1,-1 do
+			local fluid_box = data_processor.fluid_boxes[i]
+			if fluid_box.production_type == "output" then
+				for i=#fluid_box.pipe_connections,1,-1 do
+					local connection = fluid_box.pipe_connections[i]
+					if connection.direction == defines.direction.east or connection.direction == defines.direction.west then
+						table.remove(fluid_box.pipe_connections, i)
+					end
+				end
+				if #fluid_box.pipe_connections == 0 then
+					table.remove(data_processor.fluid_boxes, i)
 				end
 			end
-			log(serpent.block(fluid_box))
 		end
+
+		-- Look, this code is pretty fragile if the data processor prototype changes...
+		--   and making it flexible would just not be worth it. Have mercy, snouz
+		assert(#data_processor.fluid_boxes == 3)
+		assert(data_processor.fluid_boxes[1].production_type ~= "output")
+		assert(data_processor.fluid_boxes[2].production_type ~= "output")
+		assert(data_processor.fluid_boxes[3].production_type == "output")
+
+		-- Important for cosmic-data-outsignal-creation
+		for _,connection in pairs(data_processor.fluid_boxes[1].pipe_connections) do
+			connection.flow_direction = "input-output"
+		end
+
+		table.insert(data_processor.fluid_boxes, {
+			production_type = "input",
+			pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
+			pipe_covers = pipecoverspictures(),
+			volume = 1000,
+			pipe_connections = {
+				{flow_direction="input", direction=defines.direction.west, position={-1, -1}},
+				{flow_direction="input", direction=defines.direction.west, position={-1, 1}}
+			},
+			secondary_draw_orders = {north=-100, south=100}
+		})
+		assert(#data_processor.fluid_boxes == 4)
+		table.insert(data_processor.fluid_boxes, {
+			production_type = "output",
+			pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
+			pipe_covers = pipecoverspictures(),
+			volume = 1000,
+			pipe_connections = {
+				{flow_direction="output", direction=defines.direction.east, position={1, -1}},
+				{flow_direction="output", direction=defines.direction.east, position={1, 1}}
+			},
+			secondary_draw_orders = {north=-100, south=100}
+		})
+		assert(#data_processor.fluid_boxes == 5)
 	end
-	table.insert(data_processor.fluid_boxes, {
-		production_type = "input",
-		pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
-		pipe_covers = pipecoverspictures(),
-		volume = 1000,
-		pipe_connections = {{flow_direction="input", direction=defines.direction.west, position={-1, 0}}},
-		secondary_draw_orders = {north=-1},
-	})
-	table.insert(data_processor.fluid_boxes, {
-		production_type = "output",
-		pipe_picture = require("__base__.prototypes.entity.assembler-pictures").assembler3pipepictures,
-		pipe_covers = pipecoverspictures(),
-		volume = 1000,
-		pipe_connections = {{flow_direction="output", direction=defines.direction.east, position={1, 0}}},
-		secondary_draw_orders = {north=-1},
-	})
 end
 
 -------------------------------------------------------------------------- Datacells
 
-if settings.startup["moshine-solaponics-modify-vanilla"].value then
-	local _,data_ingredient = frep.get_ingredient("datacell-raw-data", "raw-data")
-	local _,data_result = frep.get_result("datacell-remove-raw-data", "raw-data")
-	data_ingredient.fluidbox_index = 1
-	data_result.fluidbox_index = 1
+for _,recipe in pairs(data.raw.recipe) do
+	if frep.has_category(recipe, "data-processing") then
+		local fluid_input_count = 0
+		for _,ingredient in pairs(recipe.ingredients or {}) do
+			if ingredient.type == "fluid" then
+				fluid_input_count = fluid_input_count + 1
+				ingredient.fluidbox_index = fluid_input_count
+			end
+		end
+		assert(fluid_input_count < 3)
+		for _,result in pairs(recipe.results or {}) do
+			if result.type == "fluid" then
+				result.fluidbox_index = 1
+			end
+		end
+	end
+end
 
-	frep.add_ingredient("datacell-add-equation", {type="fluid", name="raw-data", amount=100, fluidbox_index=1})
-	frep.add_ingredient("datacell-add-equation", {type="fluid", name="chloroplast-extract", amount=50, fluidbox_index=2, ignored_by_stats=20})
-	frep.add_result("datacell-add-equation", {type="fluid", name="bioslurry", amount=20, fluidbox_index=2})
+if settings.startup["moshine-solaponics-modify-vanilla"].value then
+	frep.add_ingredient("datacell-equation", {type="fluid", name="chloroplast-extract", amount=50, ignored_by_stats=20, fluidbox_index=3})
+	frep.add_result("datacell-equation", {type="fluid", name="bioslurry", amount=20, fluidbox_index=2})
 end
 
 -------------------------------------------------------------------------- Model creation
 
 if settings.startup["moshine-solaponics-modify-vanilla"].value then
-	local _,model_ingredient = frep.get_ingredient("model-unstable", "raw-data")
-	model_ingredient.fluidbox_index = 1
-
-	frep.add_ingredient("model-unstable", {type="fluid", name="chloroplast-extract", amount=50, ignored_by_stats=20, fluidbox_index=2})
+	frep.add_ingredient("model-unstable", {type="fluid", name="chloroplast-extract", amount=50, ignored_by_stats=20, fluidbox_index=3})
 	frep.add_result("model-unstable", {type="fluid", name="bioslurry", amount=20, fluidbox_index=2})
 	data.raw.recipe["model-unstable"].main_product = "model-unstable"
 
-	frep.add_ingredient("model-stable", {type="fluid", name="petroketone-cold", amount=1000, ignored_by_stats=500})
+	frep.add_ingredient("model-stable", {type="fluid", name="petroketone-cold", amount=1000, ignored_by_stats=500, fluidbox_index=3})
 	frep.add_result("model-stable", {type="fluid", name="petroketone-hot", amount=500, temperature=150, ignored_by_stats=500, ignored_by_productivity=500, fluidbox_index=2})
 	data.raw.recipe["model-stable"].main_product = "model-stable"
 end
